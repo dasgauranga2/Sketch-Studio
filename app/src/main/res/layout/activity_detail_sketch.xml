@@ -4,10 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".DetailSketchActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sketchDetailLayout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/sketchDetailLayout"
         android:layout_width="0dp"
         android:layout_height="70dp"
         android:background="@color/purple_500"
@@ -16,41 +25,30 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/headingTitleText"
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@android:color/transparent"
             android:gravity="center_vertical"
             android:letterSpacing="0.1"
             android:paddingLeft="10sp"
-            android:text="SketchStudio"
+            android:text="TextView"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/addSketchButton"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/addSketchButton"
+            android:id="@+id/imageButton"
             android:layout_width="70dp"
             android:layout_height="0dp"
             android:background="?android:attr/selectableItemBackground"
-            android:onClick="add_sketch"
             android:padding="20sp"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/add_sketch" />
+            app:srcCompat="@drawable/delete" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
