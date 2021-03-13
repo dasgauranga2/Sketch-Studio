@@ -1,6 +1,8 @@
 package com.gauranga.sketchstudio;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -15,7 +17,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
+    RecyclerView recyclerView;
+    File[] files;
+    ArrayList<String> file_names;
 
     // add a sketch
     public void add_sketch(View view) {
@@ -28,27 +32,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = findViewById(R.id.listView);
+        recyclerView = findViewById(R.id.recyclerView);
 
         ContextWrapper wrapper = new ContextWrapper(this);
+        // directory where all image files are stored
         File file = wrapper.getDir("test", MODE_PRIVATE);
-        File[] files = file.listFiles();
-
-        ArrayList<String> file_names = new ArrayList<>();
+        // list of all image files
+        files = file.listFiles();
+        // array list of image file names
+        file_names = new ArrayList<>();
         for (File image_file : files) {
             file_names.add(image_file.getName());
+            setup_recyclerview();
         }
+    }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,file_names);
-        listView.setAdapter(arrayAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), DetailSketchActivity.class);
-                intent.putExtra("FILE_NAME", files[position].getAbsolutePath());
-                startActivity(intent);
-            }
-        });
+    // setup the recycler view
+    public void setup_recyclerview() {
+        SketchListAdapter adapter = new SketchListAdapter(this, file_names, files);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
