@@ -48,7 +48,8 @@ public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.My
             public void onClick(View v) {
                 // create an intent to show the sketch
                 Intent intent = new Intent(context, DetailSketchActivity.class);
-                intent.putExtra("FILE_NAME", files[position].getAbsolutePath());
+                intent.putExtra("FILE_PATH", files[position].getAbsolutePath());
+                intent.putExtra("FILE_NAME", file_names.get(position));
                 context.startActivity(intent);
             }
         });
