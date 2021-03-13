@@ -40,7 +40,8 @@ public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // use the data passed to the adapter above
         // and set the data to the text views below
-        holder.title.setText(file_names.get(position));
+        String file_name = file_names.get(position).substring(0, file_names.get(position).length()-4);
+        holder.title.setText(file_name);
 
         // detect if an item is clicked using the root layout of the 'row.xml' file
         holder.row_layout.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +50,7 @@ public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.My
                 // create an intent to show the sketch
                 Intent intent = new Intent(context, DetailSketchActivity.class);
                 intent.putExtra("FILE_PATH", files[position].getAbsolutePath());
-                intent.putExtra("FILE_NAME", file_names.get(position));
+                intent.putExtra("FILE_NAME", file_name);
                 context.startActivity(intent);
             }
         });

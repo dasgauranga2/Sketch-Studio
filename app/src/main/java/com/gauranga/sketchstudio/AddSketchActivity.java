@@ -1,16 +1,27 @@
 package com.gauranga.sketchstudio;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.Toast;
+
+import com.skydoves.powermenu.MenuAnimation;
+import com.skydoves.powermenu.OnMenuItemClickListener;
+import com.skydoves.powermenu.PowerMenu;
+import com.skydoves.powermenu.PowerMenuItem;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,11 +29,13 @@ import java.io.OutputStream;
 
 import es.dmoral.toasty.Toasty;
 
-// GITHUB PROJECT LINK  - https://github.com/Korilakkuma/CanvasView
+// GITHUB PROJECT LINK - https://github.com/Korilakkuma/CanvasView
+// GITHUB PROJECT LINK - https://github.com/skydoves/PowerMenu#menu-effect
 public class AddSketchActivity extends AppCompatActivity {
 
     CanvasView canvas;
     EditText title;
+    PowerMenu strokewidth_menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,5 +87,40 @@ public class AddSketchActivity extends AppCompatActivity {
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // change the stroke width
+    public void change_strokewidth(View view) {
+        // create the popup menu
+        // an set its properties
+        if (strokewidth_menu == null) {
+            strokewidth_menu = new PowerMenu.Builder(this)
+                    .addItem(new PowerMenuItem("1"))
+                    .addItem(new PowerMenuItem("3"))
+                    .addItem(new PowerMenuItem("6"))
+                    .addItem(new PowerMenuItem("9"))
+                    .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
+                    .setMenuRadius(30f) // sets the corner radius.
+                    .setMenuShadow(10f) // sets the shadow.
+                    .setTextGravity(Gravity.CENTER)
+                    .setWidth(200)
+                    .setTextSize(15)
+                    .setMenuColor(Color.WHITE)
+                    .setTextColor(ContextCompat.getColor(this, R.color.purple_500))
+                    .setSelectedTextColor(Color.WHITE)
+                    .setSelectedMenuColor(Color.BLUE)
+                    .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
+                        @Override
+                        public void onItemClick(int position, PowerMenuItem item) {
+                            int new_sw = Integer.parseInt((String) item.getTitle());
+                            canvas.setPaintStrokeWidth(new_sw);
+                            strokewidth_menu.setSelectedPosition(position);
+                            strokewidth_menu.dismiss();
+                        }
+                    })
+                    .build();
+        }
+        // display the popup menu
+        strokewidth_menu.showAsAnchorLeftTop(view,0,-strokewidth_menu.getContentViewHeight());
     }
 }
