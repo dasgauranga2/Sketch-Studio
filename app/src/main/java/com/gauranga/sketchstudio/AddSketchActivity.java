@@ -7,13 +7,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import es.dmoral.toasty.Toasty;
+
+// GITHUB PROJECT LINK  - https://github.com/Korilakkuma/CanvasView
 public class AddSketchActivity extends AppCompatActivity {
 
     CanvasView canvas;
@@ -31,13 +36,26 @@ public class AddSketchActivity extends AppCompatActivity {
         canvas.setPaintStrokeColor(Color.BLUE);
         // set the stroke width
         canvas.setPaintStrokeWidth(10);
+        // set the stroke color
+        canvas.setPaintStrokeColor(Color.parseColor("#8F6450"));
+        // set the background color
+        canvas.setBaseColor(Color.parseColor("#CAF3BB"));
     }
 
     public void save_sketch(View view) {
-
+        // get the title entered by the user
         String title_text = title.getText().toString();
+        // get the image btmap from the canvas
         Bitmap bitmap = canvas.getBitmap();
+        // check for empty title
+        if (title_text.length()==0) {
+            Toast toast = Toasty.custom(this, "TITLE EMPTY", R.drawable.error_icon, R.color.purple_500, 500, true, true);
+            toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, 0);
+            toast.show();
+            return;
+        }
 
+        // save the image file
         ContextWrapper wrapper = new ContextWrapper(this);
         File file = wrapper.getDir("test", MODE_PRIVATE);
         File image_file = new File(file, title_text + ".jpg");
@@ -49,7 +67,7 @@ public class AddSketchActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
             stream.flush();
             stream.close();
-
+            // go back to the main activity
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

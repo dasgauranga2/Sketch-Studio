@@ -13,20 +13,25 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
+        android:background="@drawable/input_txt_bg"
         android:ems="10"
-        android:hint="Types skecth title"
-        android:inputType="textPersonName"
+        android:fontFamily="@font/roboto_mono"
+        android:hint="Type sketch title"
+        android:inputType="textVisiblePassword"
+        android:paddingLeft="10sp"
+        android:textColor="#8F6450"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/addSketchHeadingText" />
 
     <com.gauranga.sketchstudio.CanvasView
         android:id="@+id/canvas"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,14 +41,30 @@
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_marginStart="150dp"
         android:layout_marginEnd="150dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/button_bg"
         android:onClick="save_sketch"
         android:text="SAVE"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/addSketchHeadingText"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@color/purple_500"
+        android:gravity="center_vertical"
+        android:letterSpacing="0.1"
+        android:paddingLeft="10sp"
+        android:text="New sketch"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
