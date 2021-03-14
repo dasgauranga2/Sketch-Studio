@@ -83,14 +83,24 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
-            android:id="@+id/fontSizeButton"
+            android:id="@+id/strokewidthButton"
             android:layout_width="60dp"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="change_strokewidth"
-            android:padding="10sp"
+            android:padding="15sp"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/settings" />
+            app:srcCompat="@drawable/strokewidth" />
+
+        <ImageButton
+            android:id="@+id/strokecolorButton"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="change_strokecolor"
+            android:padding="15sp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/strokecolor_black" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

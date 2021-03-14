@@ -35,7 +35,7 @@ public class AddSketchActivity extends AppCompatActivity {
 
     CanvasView canvas;
     EditText title;
-    PowerMenu strokewidth_menu;
+    PowerMenu strokewidth_menu,strokecolor_menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +96,9 @@ public class AddSketchActivity extends AppCompatActivity {
         if (strokewidth_menu == null) {
             strokewidth_menu = new PowerMenu.Builder(this)
                     .addItem(new PowerMenuItem("1"))
-                    .addItem(new PowerMenuItem("3"))
-                    .addItem(new PowerMenuItem("6"))
-                    .addItem(new PowerMenuItem("9"))
+                    .addItem(new PowerMenuItem("4"))
+                    .addItem(new PowerMenuItem("8"))
+                    .addItem(new PowerMenuItem("12"))
                     .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
                     .setMenuRadius(30f) // sets the corner radius.
                     .setMenuShadow(10f) // sets the shadow.
@@ -107,8 +107,8 @@ public class AddSketchActivity extends AppCompatActivity {
                     .setTextSize(15)
                     .setMenuColor(Color.WHITE)
                     .setTextColor(ContextCompat.getColor(this, R.color.purple_500))
-                    .setSelectedTextColor(Color.WHITE)
-                    .setSelectedMenuColor(Color.BLUE)
+                    .setSelectedTextColor(ContextCompat.getColor(this, R.color.purple_500))
+                    .setSelectedMenuColor(Color.LTGRAY)
                     .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
                         @Override
                         public void onItemClick(int position, PowerMenuItem item) {
@@ -122,5 +122,49 @@ public class AddSketchActivity extends AppCompatActivity {
         }
         // display the popup menu
         strokewidth_menu.showAsAnchorLeftTop(view,0,-strokewidth_menu.getContentViewHeight());
+    }
+
+    // change the stroke color
+    public void change_strokecolor(View view) {
+        // create the popup menu
+        // an set its properties
+        if (strokecolor_menu == null) {
+            strokecolor_menu = new PowerMenu.Builder(this)
+                    .addItem(new PowerMenuItem("", R.drawable.strokecolor_black))
+                    .addItem(new PowerMenuItem("", R.drawable.strokecolor_red))
+                    .addItem(new PowerMenuItem("", R.drawable.strokecolor_blue))
+                    .addItem(new PowerMenuItem("", R.drawable.strokecolor_green))
+                    .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
+                    .setMenuRadius(30f) // sets the corner radius.
+                    .setMenuShadow(10f) // sets the shadow.
+                    .setTextGravity(Gravity.CENTER)
+                    .setWidth(180)
+                    .setTextSize(15)
+                    .setMenuColor(Color.WHITE)
+                    .setSelectedMenuColor(Color.LTGRAY)
+                    .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
+                        @Override
+                        public void onItemClick(int position, PowerMenuItem item) {
+                            switch (position) {
+                                case 1:
+                                    canvas.setPaintStrokeColor(Color.RED);
+                                    break;
+                                case 2:
+                                    canvas.setPaintStrokeColor(Color.BLUE);
+                                    break;
+                                case 3:
+                                    canvas.setPaintStrokeColor(Color.GREEN);
+                                    break;
+                                default:
+                                    canvas.setPaintStrokeColor(Color.BLACK);
+                            }
+                            strokecolor_menu.setSelectedPosition(position);
+                            strokecolor_menu.dismiss();
+                        }
+                    })
+                    .build();
+        }
+        // display the popup menu
+        strokecolor_menu.showAsAnchorLeftTop(view,0,-strokecolor_menu.getContentViewHeight());
     }
 }
