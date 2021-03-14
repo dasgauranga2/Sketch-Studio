@@ -84,8 +84,9 @@
 
         <ImageButton
             android:id="@+id/strokewidthButton"
-            android:layout_width="60dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="change_strokewidth"
             android:padding="15sp"
@@ -94,13 +95,55 @@
 
         <ImageButton
             android:id="@+id/strokecolorButton"
-            android:layout_width="60dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="change_strokecolor"
             android:padding="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/strokecolor_black" />
+
+        <ImageButton
+            android:id="@+id/eraserButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="toggle_eraser"
+            android:padding="15sp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/eraser_off" />
+
+        <ImageButton
+            android:id="@+id/backgroundColorButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="15sp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/background" />
+
+        <ImageButton
+            android:id="@+id/undoButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="15sp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/undo" />
+
+        <ImageButton
+            android:id="@+id/clearBButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="15sp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/clear" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

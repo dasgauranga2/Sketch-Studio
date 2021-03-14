@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -37,6 +38,10 @@ public class AddSketchActivity extends AppCompatActivity {
     EditText title;
     PowerMenu strokewidth_menu,strokecolor_menu;
 
+    private boolean ERASER_MODE = false;
+    private int STROKE_COLOR = Color.BLUE;
+    private int STROKE_WIDTH = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +54,9 @@ public class AddSketchActivity extends AppCompatActivity {
         canvas.setPaintStrokeColor(Color.BLUE);
         // set the stroke width
         canvas.setPaintStrokeWidth(10);
-        // set the stroke color
-        canvas.setPaintStrokeColor(Color.parseColor("#8F6450"));
         // set the background color
         canvas.setBaseColor(Color.parseColor("#CAF3BB"));
+        canvas.setLayerType(View.LAYER_TYPE_HARDWARE, null);
     }
 
     public void save_sketch(View view) {
@@ -113,6 +117,7 @@ public class AddSketchActivity extends AppCompatActivity {
                         @Override
                         public void onItemClick(int position, PowerMenuItem item) {
                             int new_sw = Integer.parseInt((String) item.getTitle());
+                            STROKE_WIDTH = new_sw;
                             canvas.setPaintStrokeWidth(new_sw);
                             strokewidth_menu.setSelectedPosition(position);
                             strokewidth_menu.dismiss();
@@ -138,25 +143,34 @@ public class AddSketchActivity extends AppCompatActivity {
                     .setMenuRadius(30f) // sets the corner radius.
                     .setMenuShadow(10f) // sets the shadow.
                     .setTextGravity(Gravity.CENTER)
-                    .setWidth(180)
+                    .setWidth(170)
                     .setTextSize(15)
                     .setMenuColor(Color.WHITE)
                     .setSelectedMenuColor(Color.LTGRAY)
                     .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
                         @Override
                         public void onItemClick(int position, PowerMenuItem item) {
+                            ImageButton sc_button = (ImageButton) view;
                             switch (position) {
                                 case 1:
                                     canvas.setPaintStrokeColor(Color.RED);
+                                    STROKE_COLOR = Color.RED;
+                                    sc_button.setImageResource(R.drawable.strokecolor_red);
                                     break;
                                 case 2:
                                     canvas.setPaintStrokeColor(Color.BLUE);
+                                    STROKE_COLOR = Color.BLUE;
+                                    sc_button.setImageResource(R.drawable.strokecolor_blue);
                                     break;
                                 case 3:
                                     canvas.setPaintStrokeColor(Color.GREEN);
+                                    STROKE_COLOR = Color.GREEN;
+                                    sc_button.setImageResource(R.drawable.strokecolor_green);
                                     break;
                                 default:
                                     canvas.setPaintStrokeColor(Color.BLACK);
+                                    STROKE_COLOR = Color.BLACK;
+                                    sc_button.setImageResource(R.drawable.strokecolor_black);
                             }
                             strokecolor_menu.setSelectedPosition(position);
                             strokecolor_menu.dismiss();
@@ -166,5 +180,29 @@ public class AddSketchActivity extends AppCompatActivity {
         }
         // display the popup menu
         strokecolor_menu.showAsAnchorLeftTop(view,0,-strokecolor_menu.getContentViewHeight());
+    }
+
+    // toggle eraser or drawing mode
+    public void toggle_eraser(View view) {
+        // select buttons to disable while in eraser mode
+        ImageButton sw_button = findViewById(R.id.strokewidthButton);
+        ImageButton sc_button = findViewById(R.id.strokecolorButton);
+        ImageButton er_button = (ImageButton)view;
+        // check for eraser mode
+        if (ERASER_MODE) {
+            canvas.setPaintStrokeColor(STROKE_COLOR);
+            canvas.setPaintStrokeWidth(STROKE_WIDTH);
+            er_button.setImageResource(R.drawable.eraser_off);
+            sw_button.setEnabled(true);
+            sc_button.setEnabled(true);
+        }
+        else {
+            canvas.setPaintStrokeColor(canvas.getBaseColor());
+            canvas.setPaintStrokeWidth(20);
+            er_button.setImageResource(R.drawable.eraser_on);
+            sw_button.setEnabled(false);
+            sc_button.setEnabled(false);
+        }
+        ERASER_MODE = !ERASER_MODE;
     }
 }
