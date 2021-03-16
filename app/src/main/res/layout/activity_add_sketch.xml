@@ -89,7 +89,10 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="change_strokewidth"
-            android:padding="15sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="15sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/strokewidth" />
 
@@ -100,7 +103,10 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="change_strokecolor"
-            android:padding="15sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="15sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/strokecolor_black" />
 
@@ -111,7 +117,10 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="toggle_eraser"
-            android:padding="15sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="15sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/eraser_off" />
 
@@ -121,7 +130,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
-            android:padding="15sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="15sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/background" />
 
@@ -132,7 +144,10 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="undo"
-            android:padding="15sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="15sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/undo" />
 
@@ -143,7 +158,10 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="redo"
-            android:padding="15sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="15sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/redo" />
 
@@ -154,9 +172,26 @@
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
             android:onClick="clear"
-            android:padding="15sp"
+            android:paddingLeft="10sp"
+            android:paddingTop="15sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/clear" />
+
+        <ImageButton
+            android:id="@+id/drawingmodeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="switch_mode"
+            android:paddingLeft="10sp"
+            android:paddingTop="15sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="15sp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/pen_mode" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

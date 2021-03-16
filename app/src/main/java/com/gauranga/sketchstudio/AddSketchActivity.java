@@ -36,12 +36,13 @@ public class AddSketchActivity extends AppCompatActivity {
 
     CanvasView canvas;
     EditText title;
-    PowerMenu strokewidth_menu,strokecolor_menu;
+    PowerMenu strokewidth_menu,strokecolor_menu,drawingmode_menu;
 
     private boolean ERASER_MODE = false;
     private int STROKE_COLOR = Color.BLUE;
     private int STROKE_WIDTH = 10;
     private int BACKGROUND_COLOR = Color.parseColor("#CAF3BB");
+    private CanvasView.Drawer DRAWING_MODE = CanvasView.Drawer.PEN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,6 +194,7 @@ public class AddSketchActivity extends AppCompatActivity {
         if (ERASER_MODE) {
             canvas.setPaintStrokeColor(STROKE_COLOR);
             canvas.setPaintStrokeWidth(STROKE_WIDTH);
+            canvas.setDrawer(DRAWING_MODE);
             er_button.setImageResource(R.drawable.eraser_off);
             sw_button.setEnabled(true);
             sc_button.setEnabled(true);
@@ -200,6 +202,7 @@ public class AddSketchActivity extends AppCompatActivity {
         else {
             canvas.setPaintStrokeColor(canvas.getBaseColor());
             canvas.setPaintStrokeWidth(20);
+            canvas.setDrawer(CanvasView.Drawer.PEN);
             er_button.setImageResource(R.drawable.eraser_on);
             sw_button.setEnabled(false);
             sc_button.setEnabled(false);
@@ -221,5 +224,56 @@ public class AddSketchActivity extends AppCompatActivity {
     public void clear(View view) {
         canvas.clear();
         //canvas.setBaseColor(Color.RED);
+    }
+
+    // set drawing mode
+    public void switch_mode(View view) {
+        // create the popup menu
+        // an set its properties
+        if (drawingmode_menu == null) {
+            drawingmode_menu = new PowerMenu.Builder(this)
+                    .addItem(new PowerMenuItem("Pen",true))
+                    .addItem(new PowerMenuItem("Line"))
+                    .addItem(new PowerMenuItem("Rectangle"))
+                    .addItem(new PowerMenuItem("Ellipse"))
+                    .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
+                    .setMenuRadius(30f) // sets the corner radius.
+                    .setMenuShadow(10f) // sets the shadow.
+                    .setTextGravity(Gravity.CENTER)
+                    .setWidth(300)
+                    .setTextSize(15)
+                    .setMenuColor(Color.WHITE)
+                    .setTextColor(ContextCompat.getColor(this, R.color.purple_500))
+                    .setSelectedTextColor(ContextCompat.getColor(this, R.color.purple_500))
+                    .setSelectedMenuColor(Color.LTGRAY)
+                    .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
+                        @Override
+                        public void onItemClick(int position, PowerMenuItem item) {
+                            switch (position) {
+                                case 0:
+                                    canvas.setDrawer(CanvasView.Drawer.PEN);
+                                    DRAWING_MODE = CanvasView.Drawer.PEN;
+                                    break;
+                                case 1:
+                                    canvas.setDrawer(CanvasView.Drawer.LINE);
+                                    DRAWING_MODE = CanvasView.Drawer.LINE;
+                                    break;
+                                case 2:
+                                    canvas.setDrawer(CanvasView.Drawer.RECTANGLE);
+                                    DRAWING_MODE = CanvasView.Drawer.RECTANGLE;
+                                    break;
+                                case 3:
+                                    canvas.setDrawer(CanvasView.Drawer.ELLIPSE);
+                                    DRAWING_MODE = CanvasView.Drawer.ELLIPSE;
+                                    break;
+                            }
+                            drawingmode_menu.setSelectedPosition(position);
+                            drawingmode_menu.dismiss();
+                        }
+                    })
+                    .build();
+        }
+        // display the popup menu
+        drawingmode_menu.showAsAnchorLeftTop(view,0,-drawingmode_menu.getContentViewHeight());
     }
 }
