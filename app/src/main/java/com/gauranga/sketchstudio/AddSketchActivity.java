@@ -41,6 +41,7 @@ public class AddSketchActivity extends AppCompatActivity {
     private boolean ERASER_MODE = false;
     private int STROKE_COLOR = Color.BLUE;
     private int STROKE_WIDTH = 10;
+    private int BACKGROUND_COLOR = Color.parseColor("#CAF3BB");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +56,8 @@ public class AddSketchActivity extends AppCompatActivity {
         // set the stroke width
         canvas.setPaintStrokeWidth(10);
         // set the background color
-        canvas.setBaseColor(Color.parseColor("#CAF3BB"));
-        canvas.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        canvas.setBaseColor(BACKGROUND_COLOR);
+        //canvas.setLayerType(View.LAYER_TYPE_HARDWARE, null);
     }
 
     public void save_sketch(View view) {
@@ -204,5 +205,21 @@ public class AddSketchActivity extends AppCompatActivity {
             sc_button.setEnabled(false);
         }
         ERASER_MODE = !ERASER_MODE;
+    }
+
+    // undo canvas
+    public void undo(View view) {
+        canvas.undo();
+    }
+
+    // redo canvas
+    public void redo(View view) {
+        canvas.redo();
+    }
+
+    // clear canvas
+    public void clear(View view) {
+        canvas.clear();
+        //canvas.setBaseColor(Color.RED);
     }
 }

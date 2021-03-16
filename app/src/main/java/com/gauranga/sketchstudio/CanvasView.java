@@ -547,32 +547,39 @@ public class CanvasView extends View {
      *
      * @return
      */
+//    public void clear() {
+//        Path path = new Path();
+//        path.moveTo(0F, 0F);
+//        path.addRect(0F, 0F, 1000F, 1000F, Path.Direction.CCW);
+//        path.close();
+//
+//        Paint paint = new Paint();
+//        paint.setColor(Color.WHITE);
+//        paint.setStyle(Paint.Style.FILL);
+//
+//        if (this.historyPointer == this.pathLists.size()) {
+//            this.pathLists.add(path);
+//            this.paintLists.add(paint);
+//            this.historyPointer++;
+//        } else {
+//            // On the way of Undo or Redo
+//            this.pathLists.set(this.historyPointer, path);
+//            this.paintLists.set(this.historyPointer, paint);
+//            this.historyPointer++;
+//
+//            for (int i = this.historyPointer, size = this.paintLists.size(); i < size; i++) {
+//                this.pathLists.remove(this.historyPointer);
+//                this.paintLists.remove(this.historyPointer);
+//            }
+//        }
+//
+//        this.text = "";
+//
+//        // Clear
+//        this.invalidate();
+//    }
     public void clear() {
-        Path path = new Path();
-        path.moveTo(0F, 0F);
-        path.addRect(0F, 0F, 1000F, 1000F, Path.Direction.CCW);
-        path.close();
-
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.FILL);
-
-        if (this.historyPointer == this.pathLists.size()) {
-            this.pathLists.add(path);
-            this.paintLists.add(paint);
-            this.historyPointer++;
-        } else {
-            // On the way of Undo or Redo
-            this.pathLists.set(this.historyPointer, path);
-            this.paintLists.set(this.historyPointer, paint);
-            this.historyPointer++;
-
-            for (int i = this.historyPointer, size = this.paintLists.size(); i < size; i++) {
-                this.pathLists.remove(this.historyPointer);
-                this.paintLists.remove(this.historyPointer);
-            }
-        }
-
+        this.historyPointer = 1;
         this.text = "";
 
         // Clear

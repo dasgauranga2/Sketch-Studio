@@ -131,16 +131,29 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
+            android:onClick="undo"
             android:padding="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/undo" />
 
         <ImageButton
-            android:id="@+id/clearBButton"
+            android:id="@+id/redoButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
+            android:onClick="redo"
+            android:padding="15sp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/redo" />
+
+        <ImageButton
+            android:id="@+id/clearButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="clear"
             android:padding="15sp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/clear" />
