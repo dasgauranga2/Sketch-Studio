@@ -1,3 +1,4 @@
+
 package com.gauranga.sketchstudio;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,7 @@ public class AddSketchActivity extends AppCompatActivity {
 
     CanvasView canvas;
     EditText title;
-    PowerMenu strokewidth_menu,strokecolor_menu,drawingmode_menu;
+    PowerMenu strokewidth_menu,strokecolor_menu,drawingmode_menu,background_menu;
 
     private boolean ERASER_MODE = false;
     private int STROKE_COLOR = Color.BLUE;
@@ -282,5 +283,58 @@ public class AddSketchActivity extends AppCompatActivity {
         }
         // display the popup menu
         drawingmode_menu.showAsAnchorLeftTop(view,0,-drawingmode_menu.getContentViewHeight());
+    }
+
+    // set the background color
+    public void set_background(View view) {
+        // select the image button
+        ImageButton bg_button = (ImageButton) view;
+        // create the popup menu
+        // an set its properties
+        if (background_menu == null) {
+            background_menu = new PowerMenu.Builder(this)
+                    .addItem(new PowerMenuItem("", R.drawable.red_bg))
+                    .addItem(new PowerMenuItem("", R.drawable.blue_bg))
+                    .addItem(new PowerMenuItem("", R.drawable.green_bg))
+                    .addItem(new PowerMenuItem("", R.drawable.grey_bg))
+                    .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
+                    .setMenuRadius(30f) // sets the corner radius.
+                    .setMenuShadow(10f) // sets the shadow.
+                    .setTextGravity(Gravity.CENTER)
+                    .setWidth(170)
+                    .setTextSize(15)
+                    .setMenuColor(Color.WHITE)
+                    .setTextColor(ContextCompat.getColor(this, R.color.purple_500))
+                    .setSelectedTextColor(ContextCompat.getColor(this, R.color.purple_500))
+                    .setSelectedMenuColor(Color.LTGRAY)
+                    .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
+                        @Override
+                        public void onItemClick(int position, PowerMenuItem item) {
+                            switch (position) {
+                                case 0:
+                                    canvas.setBaseColor(Color.RED);
+                                    bg_button.setImageResource(R.drawable.red_bg);
+                                    break;
+                                case 1:
+                                    canvas.setBaseColor(Color.BLUE);
+                                    bg_button.setImageResource(R.drawable.blue_bg);
+                                    break;
+                                case 2:
+                                    canvas.setBaseColor(Color.GREEN);
+                                    bg_button.setImageResource(R.drawable.green_bg);
+                                    break;
+                                case 3:
+                                    canvas.setBaseColor(Color.LTGRAY);
+                                    bg_button.setImageResource(R.drawable.grey_bg);
+                                    break;
+                            }
+                            background_menu.setSelectedPosition(position);
+                            background_menu.dismiss();
+                        }
+                    })
+                    .build();
+        }
+        // display the popup menu
+        background_menu.showAsAnchorLeftTop(view,0,-background_menu.getContentViewHeight());
     }
 }

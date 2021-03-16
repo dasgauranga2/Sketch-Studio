@@ -13,8 +13,10 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -601,7 +603,9 @@ public class CanvasView extends View {
      * @param color
      */
     public void setBaseColor(int color) {
+        //canvas.drawColor(color);
         this.baseColor = color;
+        this.invalidate();
     }
 
     /**

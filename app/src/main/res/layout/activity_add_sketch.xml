@@ -130,6 +130,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="?android:attr/selectableItemBackground"
+            android:onClick="set_background"
             android:paddingLeft="10sp"
             android:paddingTop="15sp"
             android:paddingRight="10sp"
