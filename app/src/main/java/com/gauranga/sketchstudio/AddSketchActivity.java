@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -26,10 +27,21 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
+import com.github.dhaval2404.colorpicker.ColorPickerDialog;
+import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog;
+import com.github.dhaval2404.colorpicker.listener.ColorListener;
+import com.github.dhaval2404.colorpicker.model.ColorShape;
+import com.github.dhaval2404.colorpicker.model.ColorSwatch;
 import com.skydoves.powermenu.MenuAnimation;
 import com.skydoves.powermenu.OnMenuItemClickListener;
 import com.skydoves.powermenu.PowerMenu;
 import com.skydoves.powermenu.PowerMenuItem;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,6 +57,7 @@ public class AddSketchActivity extends AppCompatActivity {
     EditText title;
     PowerMenu strokewidth_menu,strokecolor_menu,drawingmode_menu,background_menu;
     PopupWindow bg_popupwindow;
+    //ColorPickerDialog.Builder cpd;
 
     private boolean ERASER_MODE = false;
     private int STROKE_COLOR = Color.BLUE;
@@ -294,53 +307,22 @@ public class AddSketchActivity extends AppCompatActivity {
 
     // set the background color
     public void set_background(View view) {
-        // use a popup window to change the canvas background
-        LayoutInflater inflater = (LayoutInflater)
-                getSystemService(LAYOUT_INFLATER_SERVICE);
-        // select the layout of the popup window
-        View popupView = inflater.inflate(R.layout.bg_change, null);
-
-        // set the properties of the popup window
-        int width = 540;
-        int height = 300;
-        boolean focusable = true; // lets taps outside the popup also dismiss it
-        // create the popup window
-        bg_popupwindow = new PopupWindow(popupView, width, height, focusable);
-        // show the popup window
-        bg_popupwindow.showAsDropDown(view,-width/2 + view.getWidth()/2,0);
-    }
-    // change the background color when the above popup window is clicked
-    public void change_bg(View view) {
-        // get the tag of the button clicked
-        String btn_tag = view.getTag().toString();
-        // check which button was clicked and
-        // change the canvas background
-        switch (btn_tag) {
-            case "red":
-                canvas.setBaseColor(Color.RED);
-                break;
-            case "green":
-                canvas.setBaseColor(Color.GREEN);
-                break;
-            case "blue":
-                canvas.setBaseColor(Color.parseColor("#ADD8E6"));
-                break;
-            case "dark_green":
-                canvas.setBaseColor(Color.parseColor("#006400"));
-                break;
-            case "gray":
-                canvas.setBaseColor(Color.LTGRAY);
-                break;
-            case "black":
-                canvas.setBaseColor(Color.BLACK);
-                break;
-            case "purple":
-                canvas.setBaseColor(Color.parseColor("#800080"));
-                break;
-            case "orange":
-                canvas.setBaseColor(Color.parseColor("#FFA500"));
-                break;
-        }
-        //bg_popupwindow.dismiss();
+        // use color picker dialog
+        ColorPickerDialogBuilder
+                .with(this)
+                .setTitle("Choose color")
+                .initialColor(Color.BLUE)
+                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .density(12)
+                .setOnColorSelectedListener(null)
+                .setPositiveButton("ok", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        canvas.setBaseColor(selectedColor);
+                    }
+                })
+                .setNegativeButton("cancel", null)
+                .build()
+                .show();
     }
 }
