@@ -154,55 +154,25 @@ public class AddSketchActivity extends AppCompatActivity {
 
     // change the stroke color
     public void change_strokecolor(View view) {
-        // create the popup menu
-        // an set its properties
-        if (strokecolor_menu == null) {
-            strokecolor_menu = new PowerMenu.Builder(this)
-                    .addItem(new PowerMenuItem("", R.drawable.strokecolor_black))
-                    .addItem(new PowerMenuItem("", R.drawable.strokecolor_red))
-                    .addItem(new PowerMenuItem("", R.drawable.strokecolor_blue))
-                    .addItem(new PowerMenuItem("", R.drawable.strokecolor_green))
-                    .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
-                    .setMenuRadius(30f) // sets the corner radius.
-                    .setMenuShadow(10f) // sets the shadow.
-                    .setTextGravity(Gravity.CENTER)
-                    .setWidth(170)
-                    .setTextSize(15)
-                    .setMenuColor(Color.WHITE)
-                    .setSelectedMenuColor(Color.LTGRAY)
-                    .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
-                        @Override
-                        public void onItemClick(int position, PowerMenuItem item) {
-                            ImageButton sc_button = (ImageButton) view;
-                            switch (position) {
-                                case 1:
-                                    canvas.setPaintStrokeColor(Color.RED);
-                                    STROKE_COLOR = Color.RED;
-                                    sc_button.setImageResource(R.drawable.strokecolor_red);
-                                    break;
-                                case 2:
-                                    canvas.setPaintStrokeColor(Color.BLUE);
-                                    STROKE_COLOR = Color.BLUE;
-                                    sc_button.setImageResource(R.drawable.strokecolor_blue);
-                                    break;
-                                case 3:
-                                    canvas.setPaintStrokeColor(Color.GREEN);
-                                    STROKE_COLOR = Color.GREEN;
-                                    sc_button.setImageResource(R.drawable.strokecolor_green);
-                                    break;
-                                default:
-                                    canvas.setPaintStrokeColor(Color.BLACK);
-                                    STROKE_COLOR = Color.BLACK;
-                                    sc_button.setImageResource(R.drawable.strokecolor_black);
-                            }
-                            strokecolor_menu.setSelectedPosition(position);
-                            strokecolor_menu.dismiss();
-                        }
-                    })
-                    .build();
-        }
-        // display the popup menu
-        strokecolor_menu.showAsAnchorLeftTop(view,0,-strokecolor_menu.getContentViewHeight());
+        // use color picker dialog
+        ColorPickerDialogBuilder
+                .with(this)
+                .setTitle("Choose stroke color")
+                .initialColor(Color.BLUE)
+                .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
+                .density(12)
+                .setOnColorSelectedListener(null)
+                .setPositiveButton("ok", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int selectedColor, Integer[] allColors) {
+                        STROKE_COLOR = selectedColor;
+                        canvas.setPaintStrokeColor(selectedColor);
+                        ImageButton sc_button = (ImageButton) view;
+                    }
+                })
+                .setNegativeButton("cancel", null)
+                .build()
+                .show();
     }
 
     // toggle eraser or drawing mode
@@ -310,7 +280,7 @@ public class AddSketchActivity extends AppCompatActivity {
         // use color picker dialog
         ColorPickerDialogBuilder
                 .with(this)
-                .setTitle("Choose color")
+                .setTitle("Choose background color")
                 .initialColor(Color.BLUE)
                 .wheelType(ColorPickerView.WHEEL_TYPE.CIRCLE)
                 .density(12)
