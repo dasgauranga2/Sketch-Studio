@@ -4,6 +4,7 @@ package com.gauranga.sketchstudio;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,13 +12,18 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.skydoves.powermenu.MenuAnimation;
@@ -38,6 +44,7 @@ public class AddSketchActivity extends AppCompatActivity {
     CanvasView canvas;
     EditText title;
     PowerMenu strokewidth_menu,strokecolor_menu,drawingmode_menu,background_menu;
+    PopupWindow bg_popupwindow;
 
     private boolean ERASER_MODE = false;
     private int STROKE_COLOR = Color.BLUE;
@@ -287,54 +294,53 @@ public class AddSketchActivity extends AppCompatActivity {
 
     // set the background color
     public void set_background(View view) {
-        // select the image button
-        ImageButton bg_button = (ImageButton) view;
-        // create the popup menu
-        // an set its properties
-        if (background_menu == null) {
-            background_menu = new PowerMenu.Builder(this)
-                    .addItem(new PowerMenuItem("", R.drawable.red_bg))
-                    .addItem(new PowerMenuItem("", R.drawable.blue_bg))
-                    .addItem(new PowerMenuItem("", R.drawable.green_bg))
-                    .addItem(new PowerMenuItem("", R.drawable.grey_bg))
-                    .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
-                    .setMenuRadius(30f) // sets the corner radius.
-                    .setMenuShadow(10f) // sets the shadow.
-                    .setTextGravity(Gravity.CENTER)
-                    .setWidth(170)
-                    .setTextSize(15)
-                    .setMenuColor(Color.WHITE)
-                    .setTextColor(ContextCompat.getColor(this, R.color.purple_500))
-                    .setSelectedTextColor(ContextCompat.getColor(this, R.color.purple_500))
-                    .setSelectedMenuColor(Color.LTGRAY)
-                    .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
-                        @Override
-                        public void onItemClick(int position, PowerMenuItem item) {
-                            switch (position) {
-                                case 0:
-                                    canvas.setBaseColor(Color.RED);
-                                    bg_button.setImageResource(R.drawable.red_bg);
-                                    break;
-                                case 1:
-                                    canvas.setBaseColor(Color.BLUE);
-                                    bg_button.setImageResource(R.drawable.blue_bg);
-                                    break;
-                                case 2:
-                                    canvas.setBaseColor(Color.GREEN);
-                                    bg_button.setImageResource(R.drawable.green_bg);
-                                    break;
-                                case 3:
-                                    canvas.setBaseColor(Color.LTGRAY);
-                                    bg_button.setImageResource(R.drawable.grey_bg);
-                                    break;
-                            }
-                            background_menu.setSelectedPosition(position);
-                            background_menu.dismiss();
-                        }
-                    })
-                    .build();
+        // use a popup window to change the canvas background
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        // select the layout of the popup window
+        View popupView = inflater.inflate(R.layout.bg_change, null);
+
+        // set the properties of the popup window
+        int width = 540;
+        int height = 300;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        // create the popup window
+        bg_popupwindow = new PopupWindow(popupView, width, height, focusable);
+        // show the popup window
+        bg_popupwindow.showAsDropDown(view,-width/2 + view.getWidth()/2,0);
+    }
+    // change the background color when the above popup window is clicked
+    public void change_bg(View view) {
+        // get the tag of the button clicked
+        String btn_tag = view.getTag().toString();
+        // check which button was clicked and
+        // change the canvas background
+        switch (btn_tag) {
+            case "red":
+                canvas.setBaseColor(Color.RED);
+                break;
+            case "green":
+                canvas.setBaseColor(Color.GREEN);
+                break;
+            case "blue":
+                canvas.setBaseColor(Color.parseColor("#ADD8E6"));
+                break;
+            case "dark_green":
+                canvas.setBaseColor(Color.parseColor("#006400"));
+                break;
+            case "gray":
+                canvas.setBaseColor(Color.LTGRAY);
+                break;
+            case "black":
+                canvas.setBaseColor(Color.BLACK);
+                break;
+            case "purple":
+                canvas.setBaseColor(Color.parseColor("#800080"));
+                break;
+            case "orange":
+                canvas.setBaseColor(Color.parseColor("#FFA500"));
+                break;
         }
-        // display the popup menu
-        background_menu.showAsAnchorLeftTop(view,0,-background_menu.getContentViewHeight());
+        //bg_popupwindow.dismiss();
     }
 }
