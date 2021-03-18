@@ -7,8 +7,11 @@ public class SpeechCommand {
         String[] words = speech.split(" ");
 
         for (String w : words) {
-            if (w.equals("pen") || w.equals("line") || w.equals("rectangle") || w.equals("circle")) {
+            if (w.equals("brush") || w.equals("line") || w.equals("rectangle") || w.equals("circle")) {
                 return "drawing_mode";
+            }
+            else if (w.equals("undo") || w.equals("redo") || w.equals("clear")) {
+                return "modify_canvas";
             }
         }
 
@@ -20,7 +23,7 @@ public class SpeechCommand {
         String[] words = speech.split(" ");
 
         for (String w : words) {
-            if (w.equals("pen")) {
+            if (w.equals("brush")) {
                 return 0;
             }
             else if (w.equals("line")) {
@@ -31,6 +34,15 @@ public class SpeechCommand {
             }
             else if (w.equals("circle")) {
                 return 3;
+            }
+            else if (w.equals("undo")) {
+                return 0;
+            }
+            else if (w.equals("redo")) {
+                return 1;
+            }
+            else if (w.equals("clear")) {
+                return 2;
             }
         }
 

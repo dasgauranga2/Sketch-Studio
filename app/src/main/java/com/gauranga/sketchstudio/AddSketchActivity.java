@@ -92,6 +92,8 @@ public class AddSketchActivity extends AppCompatActivity {
         // set the background color
         canvas.setBaseColor(BACKGROUND_COLOR);
         //canvas.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+
+        setup_drawingmode_menu();
     }
 
     public void save_sketch(View view) {
@@ -231,58 +233,59 @@ public class AddSketchActivity extends AppCompatActivity {
 
     // set drawing mode
     public void switch_mode(View view) {
-        // create the popup menu
-        // an set its properties
-        if (drawingmode_menu == null) {
-            drawingmode_menu = new PowerMenu.Builder(this)
-                    .addItem(new PowerMenuItem("", R.drawable.pen_mode,true))
-                    .addItem(new PowerMenuItem("", R.drawable.line_mode))
-                    .addItem(new PowerMenuItem("", R.drawable.rectangle_mode))
-                    .addItem(new PowerMenuItem("", R.drawable.ellipse_mode))
-                    .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
-                    .setMenuRadius(30f) // sets the corner radius.
-                    .setMenuShadow(10f) // sets the shadow.
-                    .setTextGravity(Gravity.CENTER)
-                    .setWidth(170)
-                    .setTextSize(15)
-                    .setIconColor(Color.BLUE)
-                    .setMenuColor(Color.WHITE)
-                    .setTextColor(ContextCompat.getColor(this, R.color.purple_500))
-                    .setSelectedTextColor(ContextCompat.getColor(this, R.color.purple_500))
-                    .setSelectedMenuColor(Color.LTGRAY)
-                    .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
-                        @Override
-                        public void onItemClick(int position, PowerMenuItem item) {
-                            switch (position) {
-                                case 0:
-                                    canvas.setDrawer(CanvasView.Drawer.PEN);
-                                    dm_button.setImageResource(R.drawable.pen_mode);
-                                    DRAWING_MODE = CanvasView.Drawer.PEN;
-                                    break;
-                                case 1:
-                                    canvas.setDrawer(CanvasView.Drawer.LINE);
-                                    dm_button.setImageResource(R.drawable.line_mode);
-                                    DRAWING_MODE = CanvasView.Drawer.LINE;
-                                    break;
-                                case 2:
-                                    canvas.setDrawer(CanvasView.Drawer.RECTANGLE);
-                                    dm_button.setImageResource(R.drawable.rectangle_mode);
-                                    DRAWING_MODE = CanvasView.Drawer.RECTANGLE;
-                                    break;
-                                case 3:
-                                    canvas.setDrawer(CanvasView.Drawer.ELLIPSE);
-                                    dm_button.setImageResource(R.drawable.ellipse_mode);
-                                    DRAWING_MODE = CanvasView.Drawer.ELLIPSE;
-                                    break;
-                            }
-                            drawingmode_menu.setSelectedPosition(position);
-                            drawingmode_menu.dismiss();
-                        }
-                    })
-                    .build();
-        }
         // display the popup menu
         drawingmode_menu.showAsAnchorLeftTop(view,0,-drawingmode_menu.getContentViewHeight());
+    }
+    // setup drawing mode menu
+    public void setup_drawingmode_menu() {
+        // create the popup menu
+        // an set its properties
+        drawingmode_menu = new PowerMenu.Builder(this)
+                .addItem(new PowerMenuItem("", R.drawable.pen_mode,true))
+                .addItem(new PowerMenuItem("", R.drawable.line_mode))
+                .addItem(new PowerMenuItem("", R.drawable.rectangle_mode))
+                .addItem(new PowerMenuItem("", R.drawable.ellipse_mode))
+                .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
+            .setMenuRadius(30f) // sets the corner radius.
+            .setMenuShadow(10f) // sets the shadow.
+            .setTextGravity(Gravity.CENTER)
+            .setWidth(170)
+            .setTextSize(15)
+            .setIconColor(Color.BLUE)
+            .setMenuColor(Color.WHITE)
+            .setTextColor(ContextCompat.getColor(this, R.color.purple_500))
+            .setSelectedTextColor(ContextCompat.getColor(this, R.color.purple_500))
+            .setSelectedMenuColor(Color.LTGRAY)
+            .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
+                @Override
+                public void onItemClick(int position, PowerMenuItem item) {
+                    switch (position) {
+                        case 0:
+                            canvas.setDrawer(CanvasView.Drawer.PEN);
+                            dm_button.setImageResource(R.drawable.pen_mode);
+                            DRAWING_MODE = CanvasView.Drawer.PEN;
+                            break;
+                        case 1:
+                            canvas.setDrawer(CanvasView.Drawer.LINE);
+                            dm_button.setImageResource(R.drawable.line_mode);
+                            DRAWING_MODE = CanvasView.Drawer.LINE;
+                            break;
+                        case 2:
+                            canvas.setDrawer(CanvasView.Drawer.RECTANGLE);
+                            dm_button.setImageResource(R.drawable.rectangle_mode);
+                            DRAWING_MODE = CanvasView.Drawer.RECTANGLE;
+                            break;
+                        case 3:
+                            canvas.setDrawer(CanvasView.Drawer.ELLIPSE);
+                            dm_button.setImageResource(R.drawable.ellipse_mode);
+                            DRAWING_MODE = CanvasView.Drawer.ELLIPSE;
+                            break;
+                    }
+                    drawingmode_menu.setSelectedPosition(position);
+                    drawingmode_menu.dismiss();
+                }
+            })
+            .build();
     }
 
     // set the background color
@@ -347,6 +350,8 @@ public class AddSketchActivity extends AppCompatActivity {
                 // get the recognized speech
                 ArrayList<String> result_list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 String speech =  result_list.get(0);
+                // display the recognized speech
+                Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
                 // detect appropriate command
                 String ct = command.command_type(speech);
                 int cv = command.command_value(speech);
@@ -376,6 +381,19 @@ public class AddSketchActivity extends AppCompatActivity {
                             dm_button.setImageResource(R.drawable.ellipse_mode);
                             drawingmode_menu.setSelectedPosition(cv);
                             DRAWING_MODE = CanvasView.Drawer.ELLIPSE;
+                            break;
+                    }
+                }
+                else if (ct.equals("modify_canvas")) {
+                    switch (cv) {
+                        case 0:
+                            canvas.undo();
+                            break;
+                        case 1:
+                            canvas.redo();
+                            break;
+                        case 2:
+                            canvas.clear();
                             break;
                     }
                 }
