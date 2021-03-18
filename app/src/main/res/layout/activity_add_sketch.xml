@@ -30,6 +30,16 @@
             android:textSize="20sp" />
 
         <ImageButton
+            android:id="@+id/micButton"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="voice_command"
+            android:padding="20sp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/microphone" />
+
+        <ImageButton
             android:id="@+id/saveSketchButton"
             android:layout_width="70dp"
             android:layout_height="match_parent"
@@ -108,7 +118,7 @@
             android:paddingRight="10sp"
             android:paddingBottom="15sp"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/strokecolor_black" />
+            app:srcCompat="@drawable/strokecolor_white" />
 
         <ImageButton
             android:id="@+id/eraserButton"

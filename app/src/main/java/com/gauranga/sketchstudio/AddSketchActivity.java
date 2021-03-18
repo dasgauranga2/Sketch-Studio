@@ -2,16 +2,22 @@
 package com.gauranga.sketchstudio;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -46,6 +52,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
 
@@ -58,6 +66,9 @@ public class AddSketchActivity extends AppCompatActivity {
     PowerMenu strokewidth_menu,strokecolor_menu,drawingmode_menu,background_menu;
     PopupWindow bg_popupwindow;
     //ColorPickerDialog.Builder cpd;
+    SpeechRecognizer speechRecognizer;
+    Intent intentRecognizer;
+    ImageButton dm_button;
 
     private boolean ERASER_MODE = false;
     private int STROKE_COLOR = Color.BLUE;
@@ -72,6 +83,7 @@ public class AddSketchActivity extends AppCompatActivity {
 
         canvas = findViewById(R.id.canvas);
         title = findViewById(R.id.titleText);
+        dm_button = findViewById(R.id.drawingmodeButton);
 
         // set the stroke color
         canvas.setPaintStrokeColor(Color.BLUE);
@@ -219,8 +231,6 @@ public class AddSketchActivity extends AppCompatActivity {
 
     // set drawing mode
     public void switch_mode(View view) {
-        // select the image button
-        ImageButton dm_button = (ImageButton) view;
         // create the popup menu
         // an set its properties
         if (drawingmode_menu == null) {
@@ -294,5 +304,91 @@ public class AddSketchActivity extends AppCompatActivity {
                 .setNegativeButton("cancel", null)
                 .build()
                 .show();
+    }
+
+    // use voice commands
+    public void voice_command(View view) {
+        // initialize object
+        SpeechCommand command = new SpeechCommand();
+        // add permissions in the manifest file
+        // check for permissions from the user
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
+        }
+
+        // create the speech recognizer object
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        // create an intent to recognize the speech
+        intentRecognizer = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intentRecognizer.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        // set a speech recognition listener
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle params) {}
+            // function is called when the user starts speaking
+            @Override
+            public void onBeginningOfSpeech() {}
+
+            @Override
+            public void onRmsChanged(float rmsdB) {}
+
+            @Override
+            public void onBufferReceived(byte[] buffer) {}
+
+            @Override
+            public void onEndOfSpeech() {}
+
+            @Override
+            public void onError(int error) {}
+
+            @Override
+            public void onResults(Bundle results) {
+                // get the recognized speech
+                ArrayList<String> result_list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                String speech =  result_list.get(0);
+                // detect appropriate command
+                String ct = command.command_type(speech);
+                int cv = command.command_value(speech);
+                // execute the command
+                if (ct.equals("drawing_mode")) {
+                    switch (cv) {
+                        case 0:
+                            canvas.setDrawer(CanvasView.Drawer.PEN);
+                            dm_button.setImageResource(R.drawable.pen_mode);
+                            drawingmode_menu.setSelectedPosition(cv);
+                            DRAWING_MODE = CanvasView.Drawer.PEN;
+                            break;
+                        case 1:
+                            canvas.setDrawer(CanvasView.Drawer.LINE);
+                            dm_button.setImageResource(R.drawable.line_mode);
+                            drawingmode_menu.setSelectedPosition(cv);
+                            DRAWING_MODE = CanvasView.Drawer.LINE;
+                            break;
+                        case 2:
+                            canvas.setDrawer(CanvasView.Drawer.RECTANGLE);
+                            dm_button.setImageResource(R.drawable.rectangle_mode);
+                            drawingmode_menu.setSelectedPosition(cv);
+                            DRAWING_MODE = CanvasView.Drawer.RECTANGLE;
+                            break;
+                        case 3:
+                            canvas.setDrawer(CanvasView.Drawer.ELLIPSE);
+                            dm_button.setImageResource(R.drawable.ellipse_mode);
+                            drawingmode_menu.setSelectedPosition(cv);
+                            DRAWING_MODE = CanvasView.Drawer.ELLIPSE;
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void onPartialResults(Bundle partialResults) {}
+
+            @Override
+            public void onEvent(int eventType, Bundle params) {}
+        });
+
+        // start the speech recognition
+        speechRecognizer.startListening(intentRecognizer);
     }
 }
