@@ -351,7 +351,7 @@ public class AddSketchActivity extends AppCompatActivity {
                 ArrayList<String> result_list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 String speech =  result_list.get(0);
                 // display the recognized speech
-                Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
                 // detect appropriate command
                 String ct = command.command_type(speech);
                 int cv = command.command_value(speech);
@@ -396,6 +396,30 @@ public class AddSketchActivity extends AppCompatActivity {
                             canvas.clear();
                             break;
                     }
+                }
+                else if (ct.equals("eraser")) {
+                    // select buttons to disable while in eraser mode
+                    ImageButton sw_button = findViewById(R.id.strokewidthButton);
+                    ImageButton sc_button = findViewById(R.id.strokecolorButton);
+                    ImageButton er_button = findViewById(R.id.eraserButton);
+                    // check for eraser mode
+                    if (ERASER_MODE) {
+                        canvas.setPaintStrokeColor(STROKE_COLOR);
+                        canvas.setPaintStrokeWidth(STROKE_WIDTH);
+                        canvas.setDrawer(DRAWING_MODE);
+                        er_button.setImageResource(R.drawable.eraser_off);
+                        sw_button.setEnabled(true);
+                        sc_button.setEnabled(true);
+                    }
+                    else {
+                        canvas.setPaintStrokeColor(canvas.getBaseColor());
+                        canvas.setPaintStrokeWidth(20);
+                        canvas.setDrawer(CanvasView.Drawer.PEN);
+                        er_button.setImageResource(R.drawable.eraser_on);
+                        sw_button.setEnabled(false);
+                        sc_button.setEnabled(false);
+                    }
+                    ERASER_MODE = !ERASER_MODE;
                 }
             }
 

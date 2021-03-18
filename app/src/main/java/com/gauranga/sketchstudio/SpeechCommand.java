@@ -4,14 +4,20 @@ public class SpeechCommand {
 
     // detect the type of command
     String command_type(String speech) {
-        String[] words = speech.split(" ");
+        String[] words = speech.toLowerCase().split(" ");
 
         for (String w : words) {
             if (w.equals("brush") || w.equals("line") || w.equals("rectangle") || w.equals("circle")) {
+                // change the drawing mode
                 return "drawing_mode";
             }
             else if (w.equals("undo") || w.equals("redo") || w.equals("clear")) {
+                // undo/redo/clear canvas
                 return "modify_canvas";
+            }
+            else if (w.equals("eraser")) {
+                // toggle eraser mode
+                return "eraser";
             }
         }
 
