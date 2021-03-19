@@ -421,6 +421,9 @@ public class AddSketchActivity extends AppCompatActivity {
                     }
                     ERASER_MODE = !ERASER_MODE;
                 }
+                else if (ct.equals("background")) {
+                    canvas.setBaseColor(cv);
+                }
             }
 
             @Override

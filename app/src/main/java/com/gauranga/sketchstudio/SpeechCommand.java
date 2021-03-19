@@ -1,6 +1,24 @@
 package com.gauranga.sketchstudio;
 
+import android.graphics.Color;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class SpeechCommand {
+
+    Map<String,Integer> color_codes = Stream.of(new Object[][] {
+            {"blue", Color.BLUE},
+            {"red", Color.RED},
+            {"green", Color.GREEN},
+            {"gray", Color.GRAY},
+            {"yellow", Color.YELLOW},
+            {"magenta", Color.MAGENTA},
+    }).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));
 
     // detect the type of command
     String command_type(String speech) {
@@ -19,6 +37,10 @@ public class SpeechCommand {
                 // toggle eraser mode
                 return "eraser";
             }
+            else if (w.equals("background")) {
+                // toggle eraser mode
+                return "background";
+            }
         }
 
         return "";
@@ -26,7 +48,7 @@ public class SpeechCommand {
 
     // command value
     int command_value(String speech) {
-        String[] words = speech.split(" ");
+        String[] words = speech.toLowerCase().split(" ");
 
         for (String w : words) {
             if (w.equals("brush")) {
@@ -49,6 +71,9 @@ public class SpeechCommand {
             }
             else if (w.equals("clear")) {
                 return 2;
+            }
+            else if (color_codes.containsKey(w)) {
+                return color_codes.get(w);
             }
         }
 

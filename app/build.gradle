@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         applicationId "com.gauranga.sketchstudio"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
-        versionCode 3
-        versionName "3.1"
+        versionCode 5
+        versionName "3.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
