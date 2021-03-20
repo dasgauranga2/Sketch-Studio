@@ -31,6 +31,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flask.colorpicker.ColorPickerView;
@@ -132,38 +134,45 @@ public class AddSketchActivity extends AppCompatActivity {
 
     // change the stroke width
     public void change_strokewidth(View view) {
-        // create the popup menu
-        // an set its properties
-        if (strokewidth_menu == null) {
-            strokewidth_menu = new PowerMenu.Builder(this)
-                    .addItem(new PowerMenuItem("1"))
-                    .addItem(new PowerMenuItem("4"))
-                    .addItem(new PowerMenuItem("8"))
-                    .addItem(new PowerMenuItem("12"))
-                    .setAnimation(MenuAnimation.SHOWUP_TOP_LEFT) // Animation start point (TOP | LEFT).
-                    .setMenuRadius(30f) // sets the corner radius.
-                    .setMenuShadow(10f) // sets the shadow.
-                    .setTextGravity(Gravity.CENTER)
-                    .setWidth(200)
-                    .setTextSize(15)
-                    .setMenuColor(Color.WHITE)
-                    .setTextColor(ContextCompat.getColor(this, R.color.purple_500))
-                    .setSelectedTextColor(ContextCompat.getColor(this, R.color.purple_500))
-                    .setSelectedMenuColor(Color.LTGRAY)
-                    .setOnMenuItemClickListener(new OnMenuItemClickListener<PowerMenuItem>() {
-                        @Override
-                        public void onItemClick(int position, PowerMenuItem item) {
-                            int new_sw = Integer.parseInt((String) item.getTitle());
-                            STROKE_WIDTH = new_sw;
-                            canvas.setPaintStrokeWidth(new_sw);
-                            strokewidth_menu.setSelectedPosition(position);
-                            strokewidth_menu.dismiss();
-                        }
-                    })
-                    .build();
-        }
-        // display the popup menu
-        strokewidth_menu.showAsAnchorLeftTop(view,0,-strokewidth_menu.getContentViewHeight());
+        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        // set the layout file of the popup window
+        View popupView = inflater.inflate(R.layout.sw_menu, null);
+        // specify the height and width of the popup window
+        int width = 700;
+        int height = 150;
+        // make inactive items outside of popup window
+        boolean focusable = true;
+        // create the popup window and set its properties
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        // set the location of the popup window
+        popupWindow.showAsDropDown(view, 50, -50);
+
+        // display stroke width
+        TextView sw_text = popupView.findViewById(R.id.sw_text);
+        sw_text.setText(String.valueOf(STROKE_WIDTH));
+        // seekbar for changing stroke width
+        SeekBar sw_seekbar = popupView.findViewById(R.id.sw_seekbar);
+        sw_seekbar.setMin(1);
+        sw_seekbar.setMax(50);
+        sw_seekbar.setProgress(STROKE_WIDTH);
+        sw_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                sw_text.setText(String.valueOf(progress));
+                STROKE_WIDTH = progress;
+                canvas.setPaintStrokeWidth(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     // change the stroke color
@@ -351,7 +360,7 @@ public class AddSketchActivity extends AppCompatActivity {
                 ArrayList<String> result_list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 String speech =  result_list.get(0);
                 // display the recognized speech
-                //Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
                 // detect appropriate command
                 String ct = command.command_type(speech);
                 int cv = command.command_value(speech);
