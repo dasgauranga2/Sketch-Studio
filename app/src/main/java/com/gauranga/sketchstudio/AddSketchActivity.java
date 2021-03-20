@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -106,7 +107,7 @@ public class AddSketchActivity extends AppCompatActivity {
         // check for empty title
         if (title_text.length()==0) {
             Toast toast = Toasty.custom(this, "TITLE EMPTY", R.drawable.error_icon, R.color.purple_500, 500, true, true);
-            toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, 0);
+            toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, (int) canvas.getY()+canvas.getHeight());
             toast.show();
             return;
         }
@@ -360,7 +361,7 @@ public class AddSketchActivity extends AppCompatActivity {
                 ArrayList<String> result_list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 String speech =  result_list.get(0);
                 // display the recognized speech
-                Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
                 // detect appropriate command
                 String ct = command.command_type(speech);
                 int cv = command.command_value(speech);
@@ -432,6 +433,10 @@ public class AddSketchActivity extends AppCompatActivity {
                 }
                 else if (ct.equals("background")) {
                     canvas.setBaseColor(cv);
+                }
+                else if (ct.equals("brush_width")) {
+                    STROKE_WIDTH = cv;
+                    canvas.setPaintStrokeWidth(cv);
                 }
             }
 

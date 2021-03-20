@@ -25,7 +25,11 @@ public class SpeechCommand {
         String[] words = speech.toLowerCase().split(" ");
 
         for (String w : words) {
-            if (w.equals("brush") || w.equals("line") || w.equals("rectangle") || w.equals("circle")) {
+            if (w.equals("thickness")) {
+                // change stroke width
+                return "brush_width";
+            }
+            else if (w.equals("brush") || w.equals("line") || w.equals("rectangle") || w.equals("circle")) {
                 // change the drawing mode
                 return "drawing_mode";
             }
@@ -38,9 +42,10 @@ public class SpeechCommand {
                 return "eraser";
             }
             else if (w.equals("background")) {
-                // toggle eraser mode
+                // change background image
                 return "background";
             }
+
         }
 
         return "";
@@ -51,7 +56,18 @@ public class SpeechCommand {
         String[] words = speech.toLowerCase().split(" ");
 
         for (String w : words) {
-            if (w.equals("brush")) {
+            if (w.equals("thickness")) {
+                for (String nw : words) {
+                    try {
+                        int sw = Integer.parseInt(nw);
+                        return Math.min(sw, 50);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if (w.equals("brush")) {
                 return 0;
             }
             else if (w.equals("line")) {
