@@ -66,9 +66,7 @@ public class AddSketchActivity extends AppCompatActivity {
 
     CanvasView canvas;
     EditText title;
-    PowerMenu strokewidth_menu,strokecolor_menu,drawingmode_menu,background_menu;
-    PopupWindow bg_popupwindow;
-    //ColorPickerDialog.Builder cpd;
+    PowerMenu drawingmode_menu;
     SpeechRecognizer speechRecognizer;
     Intent intentRecognizer;
     ImageButton dm_button;
@@ -94,7 +92,6 @@ public class AddSketchActivity extends AppCompatActivity {
         canvas.setPaintStrokeWidth(10);
         // set the background color
         canvas.setBaseColor(BACKGROUND_COLOR);
-        //canvas.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         setup_drawingmode_menu();
     }
@@ -361,7 +358,7 @@ public class AddSketchActivity extends AppCompatActivity {
                 ArrayList<String> result_list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 String speech =  result_list.get(0);
                 // display the recognized speech
-                //Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), speech, Toast.LENGTH_SHORT).show();
                 // detect appropriate command
                 String ct = command.command_type(speech);
                 int cv = command.command_value(speech);
@@ -432,7 +429,14 @@ public class AddSketchActivity extends AppCompatActivity {
                     ERASER_MODE = !ERASER_MODE;
                 }
                 else if (ct.equals("background")) {
-                    canvas.setBaseColor(cv);
+                    if (cv != -1) {
+                        canvas.setBaseColor(cv);
+                    }
+                    else {
+                        Toast toast = Toasty.custom(getApplicationContext(), "INVALID COLOR", R.drawable.error_icon, R.color.purple_500, 500, true, true);
+                        toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, (int) canvas.getY()+canvas.getHeight());
+                        toast.show();
+                    }
                 }
                 else if (ct.equals("brush_width")) {
                     STROKE_WIDTH = cv;
