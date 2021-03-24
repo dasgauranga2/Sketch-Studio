@@ -12,7 +12,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.MyViewHolder> {
 
@@ -42,7 +44,12 @@ public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.My
         String file_name = img_files.get(position).file_name.substring(19, img_files.get(position).file_name.length()-4);
         holder.title.setText(file_name);
 
-        // detect if an item is clicked using the root layout of the 'row.xml' file
+        // set the date of each image file
+        Date date = new Date(img_files.get(position).key);
+        SimpleDateFormat date_format = new SimpleDateFormat("dd MMM yyyy");
+        holder.date.setText(date_format.format(date));
+
+        // detect if an item is clicked using the root layout of the 'sketch_list_row.xml' file
         holder.row_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,11 +71,13 @@ public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder{
         // Each row will contain one text view for displaying the data
         TextView title;
+        TextView date;
         ConstraintLayout row_layout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.sketchTitleText);
+            date = itemView.findViewById(R.id.sketchDateText);
             row_layout = itemView.findViewById(R.id.sr_layout);
         }
     }
