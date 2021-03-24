@@ -70,6 +70,7 @@ public class AddSketchActivity extends AppCompatActivity {
     SpeechRecognizer speechRecognizer;
     Intent intentRecognizer;
     ImageButton dm_button;
+    String IMG_FILE_SEP = "______";
 
     private boolean ERASER_MODE = false;
     private int STROKE_COLOR = Color.BLUE;
@@ -99,6 +100,8 @@ public class AddSketchActivity extends AppCompatActivity {
     public void save_sketch(View view) {
         // get the title entered by the user
         String title_text = title.getText().toString();
+        // get the current time
+        String time = String.valueOf(System.currentTimeMillis());
         // get the image btmap from the canvas
         Bitmap bitmap = canvas.getBitmap();
         // check for empty title
@@ -112,7 +115,7 @@ public class AddSketchActivity extends AppCompatActivity {
         // save the image file
         ContextWrapper wrapper = new ContextWrapper(this);
         File file = wrapper.getDir("test", MODE_PRIVATE);
-        File image_file = new File(file, title_text + ".jpg");
+        File image_file = new File(file, time + IMG_FILE_SEP + title_text + ".jpg");
         try {
             OutputStream stream = null;
             // an output stream that writes bytes to a file

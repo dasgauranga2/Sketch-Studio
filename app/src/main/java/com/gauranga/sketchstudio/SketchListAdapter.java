@@ -16,15 +16,14 @@ import java.util.ArrayList;
 
 public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.MyViewHolder> {
 
-    ArrayList<String> file_names;
-    File[] files;
+    ArrayList<MainActivity.ImageFile> img_files;
     Context context;
+    String IMG_FILE_SEP = "______";
 
     // the context and the data is passed to the adapter
-    public SketchListAdapter(Context ct, ArrayList<String> fn, File[] f) {
+    public SketchListAdapter(Context ct, ArrayList<MainActivity.ImageFile> ifs) {
         context = ct;
-        file_names = fn;
-        files = f;
+        img_files = ifs;
     }
 
     @NonNull
@@ -40,7 +39,7 @@ public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         // use the data passed to the adapter above
         // and set the data to the text views below
-        String file_name = file_names.get(position).substring(0, file_names.get(position).length()-4);
+        String file_name = img_files.get(position).file_name.substring(19, img_files.get(position).file_name.length()-4);
         holder.title.setText(file_name);
 
         // detect if an item is clicked using the root layout of the 'row.xml' file
@@ -49,7 +48,7 @@ public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.My
             public void onClick(View v) {
                 // create an intent to show the sketch
                 Intent intent = new Intent(context, DetailSketchActivity.class);
-                intent.putExtra("FILE_PATH", files[position].getAbsolutePath());
+                intent.putExtra("FILE_PATH", img_files.get(position).file.getAbsolutePath());
                 intent.putExtra("FILE_NAME", file_name);
                 context.startActivity(intent);
             }
@@ -59,7 +58,7 @@ public class SketchListAdapter extends RecyclerView.Adapter<SketchListAdapter.My
     @Override
     public int getItemCount() {
         // return the length of the recycler view
-        return file_names.size();
+        return img_files.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
