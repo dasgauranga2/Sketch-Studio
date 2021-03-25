@@ -6,6 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".AddSketchActivity">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="50dp"
+        android:hint="Sketch Title"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:counterEnabled="true"
+        app:endIconMode="clear_text"
+        app:helperText="Title of the sketch"
+        app:helperTextEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:inputType="textVisiblePassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
@@ -50,37 +79,18 @@
             app:srcCompat="@drawable/save" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/titleText"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="50dp"
-        android:background="@drawable/input_txt_bg"
-        android:ems="10"
-        android:fontFamily="@font/roboto_mono"
-        android:hint="Type sketch title"
-        android:inputType="textVisiblePassword"
-        android:paddingLeft="10sp"
-        android:textColor="#8F6450"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
     <com.gauranga.sketchstudio.CanvasView
         android:id="@+id/canvas"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="50dp"
         app:layout_constraintBottom_toTopOf="@+id/canvasPropertyLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+        app:layout_constraintTop_toBottomOf="@+id/textField" />
 
     <LinearLayout
         android:id="@+id/canvasPropertyLayout"

@@ -75,7 +75,7 @@ public class AddSketchActivity extends AppCompatActivity {
     private boolean ERASER_MODE = false;
     private int STROKE_COLOR = Color.BLUE;
     private int STROKE_WIDTH = 10;
-    private int BACKGROUND_COLOR = Color.parseColor("#CAF3BB");
+    private int BACKGROUND_COLOR = Color.parseColor("#B9FF9E");
     private CanvasView.Drawer DRAWING_MODE = CanvasView.Drawer.PEN;
 
     @Override
