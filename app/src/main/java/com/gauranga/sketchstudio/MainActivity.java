@@ -1,4 +1,4 @@
-package com.gauranga.sketchstudio;
+ package com.gauranga.sketchstudio;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
     // add a sketch
     public void add_sketch(View view) {
         Intent intent = new Intent(this, AddSketchActivity.class);
+        startActivity(intent);
+    }
+
+    // available voice commands
+    public void voice_commands(View view) {
+        Intent intent = new Intent(this, VoiceCommandActivity.class);
         startActivity(intent);
     }
 

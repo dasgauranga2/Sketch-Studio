@@ -40,9 +40,22 @@
             android:padding="20sp"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/voiceCommandsButton"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/add_sketch" />
+
+        <ImageButton
+            android:id="@+id/voiceCommandsButton"
+            android:layout_width="70dp"
+            android:layout_height="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:onClick="voice_commands"
+            android:padding="20sp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/chat" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

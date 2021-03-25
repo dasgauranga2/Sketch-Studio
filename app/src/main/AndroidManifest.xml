@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gauranga.sketchstudio">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/pen_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
-        <activity android:name=".DetailSketchActivity"></activity>
+        <activity android:name=".VoiceCommandActivity"></activity>
+        <activity android:name=".DetailSketchActivity" />
         <activity android:name=".AddSketchActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
